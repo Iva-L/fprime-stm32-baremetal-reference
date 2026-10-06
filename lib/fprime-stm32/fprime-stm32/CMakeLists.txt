@@ -2,7 +2,7 @@
 # fprime-stm32 is a reusable submodule: it only supplies hardware-agnostic
 # OSAL delegates and drivers on top of a `FprimeStm32` target. The consuming
 # project owns the actual hardware/HAL build (see
-# FprimeBaremetalReference/Hardware/CMakeLists.txt) so that swapping to
+# FprimeStm32BaremetalReference/Hardware/CMakeLists.txt) so that swapping to
 # different hardware never requires forking this library.
 ####
 

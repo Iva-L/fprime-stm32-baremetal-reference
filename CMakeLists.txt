@@ -1,10 +1,10 @@
 ####
-# This sets up the build system for the 'FprimeBaremetalReference' project, including
+# This sets up the build system for the 'FprimeStm32BaremetalReference' project, including
 # components and deployments from project.cmake. In addition, it imports the core F Prime components.
 ####
 
 cmake_minimum_required(VERSION 3.24.2)
-project(FprimeBaremetalReference C CXX)
+project(FprimeStm32BaremetalReference C CXX)
 enable_language(ASM)
 
 ###
@@ -16,5 +16,5 @@ include("${CMAKE_CURRENT_LIST_DIR}/lib/fprime/cmake/FPrime.cmake")
 fprime_setup_included_code()
 
 # This includes project-wide objects
-add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/FprimeBaremetalReference")
-add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/FprimeBaremetalReference/Deployments/ReferenceDeployment/")
+add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/FprimeStm32BaremetalReference")
+add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/FprimeStm32BaremetalReference/Deployments/ReferenceDeployment/")

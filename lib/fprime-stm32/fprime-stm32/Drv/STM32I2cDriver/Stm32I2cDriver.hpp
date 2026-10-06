@@ -97,4 +97,4 @@ class Stm32I2cDriver final : public Stm32I2cDriverComponentBase {
 
 }  // namespace Stm32
 
-#endif
+#endif // FPRIME_STM32_DRV_STM32I2CDRIVER_STM32I2CDRIVER_HPP

@@ -15,7 +15,7 @@ STM32 families addable without forking it): reusable OSAL delegates, drivers,
 and a bootstrap allocator that any consuming project gets "for free," while
 everything CubeMX-generated or board-specific (this board's `.ioc` output,
 clock/tick-source glue, the linker script) stays owned by this project in
-`FprimeBaremetalReference/Hardware/`. See the
+`FprimeStm32BaremetalReference/Hardware/`. See the
 [`lib/fprime-stm32` module README](lib/fprime-stm32/README.md) for the full
 architecture and the driver-configuration pattern described below. Sensor
 components (currently an MPU-6050 IMU, wired directly to `Stm32I2cDriver`) come
@@ -30,7 +30,7 @@ which peripheral instance it's allowed to use from
 `TIM2_INSTANCE`) that keeps a driver from touching a peripheral your board's
 `.ioc` never actually configured. The library ships a default copy at
 `lib/fprime-stm32/Drv/config/Stm32Config.hpp`; this project overrides it with
-its own copy at `FprimeBaremetalReference/config/fprime-stm32/Stm32Config.hpp`
+its own copy at `FprimeStm32BaremetalReference/config/fprime-stm32/Stm32Config.hpp`
 (via `settings.ini`'s `config_directory`) to match this board's real wiring.
 When starting a new project from this reference, edit the override copy, not
 the library's default. Selecting a disabled instance in a driver's `open()`

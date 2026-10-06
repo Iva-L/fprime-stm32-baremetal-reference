@@ -64,9 +64,9 @@ The flight image uses a single-threaded polling loop:
 
 Treat the following as established project behavior unless new evidence disproves it:
 
-- `FprimeBaremetalReference/Deployments/ReferenceDeployment/Main.cpp` owns the bare-metal startup and cyclic executive.
-- `FprimeBaremetalReference/Deployments/ReferenceDeployment/Top/ReferenceDeploymentTopology.cpp` owns deployment-specific topology configuration.
-- `FprimeBaremetalReference/Deployments/ReferenceDeployment/Top/instances.fpp` and `topology.fpp` define the active topology and time wiring.
+- `FprimeStm32BaremetalReference/Deployments/ReferenceDeployment/Main.cpp` owns the bare-metal startup and cyclic executive.
+- `FprimeStm32BaremetalReference/Deployments/ReferenceDeployment/Top/ReferenceDeploymentTopology.cpp` owns deployment-specific topology configuration.
+- `FprimeStm32BaremetalReference/Deployments/ReferenceDeployment/Top/instances.fpp` and `topology.fpp` define the active topology and time wiring.
 - `Svc::OsTime`, not `Svc::ChronoTime`, is used because the bare-metal `std::chrono::system_clock` implementation is not a valid time source.
 - TIM2 runs as a 1 MHz free-running timer. The STM32 RawTime delegate assembles a race-safe 64-bit microsecond count from the 32-bit counter and an overflow counter.
 - `Os::Queue_Stm32` is the selected fixed-depth, interrupt-safe FIFO queue implementation.

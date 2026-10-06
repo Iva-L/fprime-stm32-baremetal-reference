@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fprime-stm32-cli"
+version = "0.1.0"
+description = "Port STM32CubeMX STM32H7 projects into the F' bare-metal linker/startup layout"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+fprime-stm32 = "fprime_stm32.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fprime_stm32"]

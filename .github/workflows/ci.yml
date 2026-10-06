@@ -60,7 +60,7 @@ jobs:
       - name: Run Component/Led Host Tests
         run: |
           # Navigate to the Led component directory and run host tests
-          cd $GITHUB_WORKSPACE/FprimeBaremetalReference/Components/Led && fprime-util check --coverage
+          cd $GITHUB_WORKSPACE/FprimeStm32BaremetalReference/Components/Led && fprime-util check --coverage
 
       - name: Run Drv/STM32UartDriver Host Tests
         run: |

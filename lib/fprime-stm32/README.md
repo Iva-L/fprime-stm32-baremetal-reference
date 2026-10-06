@@ -54,7 +54,7 @@ no board-specific source. It only expects a CMake target named `FprimeStm32`
 to already exist -- built and exposed by the *consuming* project, along with
 its public include paths for `main.h`, `stm32h7xx_hal_conf.h`, and the rest
 of the CubeMX/HAL headers. In this repository that target is defined in
-`FprimeBaremetalReference/Hardware/CMakeLists.txt`, which builds the actual
+`FprimeStm32BaremetalReference/Hardware/CMakeLists.txt`, which builds the actual
 CubeMX-generated project (regenerable in place from its own `.ioc` file) plus
 a handful of hand-written, project-specific clock/tick-source glue (which
 timer backs `Os::RawTime`, the exact PLL/oscillator sequence -- these are
@@ -66,7 +66,7 @@ The real interrupt implementation (`stm32h7xx_it.c`) must be linked directly
 into each deployment executable, rather than only through the `FprimeStm32`
 static library, so its strong handlers override the startup file's weak
 `Default_Handler` aliases -- see the NOTE in
-`FprimeBaremetalReference/Hardware/CMakeLists.txt`.
+`FprimeStm32BaremetalReference/Hardware/CMakeLists.txt`.
 
 ### Enabling and selecting peripheral instances
 
@@ -82,7 +82,7 @@ not a runtime condition to gracefully handle.
 The library's copy of `Stm32Config.hpp` is the default; a consuming project
 overrides it by placing its own copy at the same relative path under its
 `settings.ini`-configured `config_directory` (this project's override lives
-at `FprimeBaremetalReference/config/fprime-stm32/Stm32Config.hpp`). When
+at `FprimeStm32BaremetalReference/config/fprime-stm32/Stm32Config.hpp`). When
 retargeting this library to a new board, edit only the override copy — enable
 the instances your `.ioc` actually configured, and pass the matching enum
 value (`Stm32::I2cInstance::I2c1`, `Stm32::TimerInstance::Tim2`, ...) to the
