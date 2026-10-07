@@ -20,6 +20,7 @@ module ReferenceDeployment {
     import DataProducts.Subtopology
     import FileHandling.Subtopology
     import MpuImu.Subtopology
+    import Bmp280.Subtopology
     
   # ----------------------------------------------------------------------
   # Instances used in the topology
@@ -111,6 +112,8 @@ module ReferenceDeployment {
       rateGroup_1Hz.RateGroupMemberOut[4] -> ComCcsds.aggregator.timeout
       rateGroup_1Hz.RateGroupMemberOut[5] -> CdhCore.cmdDisp.run
       rateGroup_1Hz.RateGroupMemberOut[6] -> comDriver.run
+      rateGroup_1Hz.RateGroupMemberOut[8] -> MpuImu.imuManager.run
+      rateGroup_1Hz.RateGroupMemberOut[9] -> Bmp280.bmpManager.run
 
       # 0.5Hz rate group
       rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup_0_5Hz] -> rateGroup_0_5Hz.CycleIn
@@ -137,10 +140,6 @@ module ReferenceDeployment {
       
       # led's gpioSet output is connected to gpioDriver's gpioWrite input
       led.gpioSet -> gpioDriver.gpioWrite
-    }
-
-    connections MpuImu {
-      rateGroup_1Hz.RateGroupMemberOut[8] -> MpuImu.imuManager.run
     }
   }
 

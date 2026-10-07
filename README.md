@@ -1,4 +1,4 @@
-# F´ Baremetal Reference Project
+# F´ Stm32 Baremetal Reference Project
 
 This project is a reference F´ deployment for embedded systems with strict
 hardware and memory constraints. `ReferenceDeployment` contains only the basic

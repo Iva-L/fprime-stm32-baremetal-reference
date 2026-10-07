@@ -21,6 +21,7 @@ register_fprime_module(
     DEPENDS
         Fw_Logger
         FprimeStm32Allocator
+        fprime-baremetal-config
 )
 
 target_include_directories(ReferenceDeployment_Top PUBLIC
