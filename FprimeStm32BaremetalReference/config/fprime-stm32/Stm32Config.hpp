@@ -71,6 +71,38 @@
 #endif  // I2C4_INSTANCE
 
 // ======================================================================
+// SPI peripheral instances
+// ======================================================================
+
+#ifndef SPI_ENABLED
+#define SPI_ENABLED (true)
+#endif  // SPI_ENABLED
+
+#ifndef SPI1_INSTANCE
+#define SPI1_INSTANCE (false) //!< Indicates whether the SPI1 peripheral instance is enabled
+#endif  // SPI1_INSTANCE
+
+#ifndef SPI2_INSTANCE
+#define SPI2_INSTANCE (false) //!< Indicates whether the SPI2 peripheral instance is enabled
+#endif  // SPI2_INSTANCE
+
+#ifndef SPI3_INSTANCE
+#define SPI3_INSTANCE (false) //!< Indicates whether the SPI3 peripheral instance is enabled
+#endif  // SPI3_INSTANCE
+
+#ifndef SPI4_INSTANCE
+#define SPI4_INSTANCE (false) //!< Indicates whether the SPI4 peripheral instance is enabled
+#endif  // SPI4_INSTANCE
+
+#ifndef SPI5_INSTANCE
+#define SPI5_INSTANCE (true) //!< Indicates whether the SPI5 peripheral instance is enabled
+#endif  // SPI5_INSTANCE
+
+#ifndef SPI6_INSTANCE
+#define SPI6_INSTANCE (false) //!< Indicates whether the SPI6 peripheral instance is enabled
+#endif  // SPI6_INSTANCE
+
+// ======================================================================
 // TIM peripheral instances
 // ======================================================================
 

@@ -33,6 +33,8 @@ if (FPRIME_PLATFORM STREQUAL "stm32h7")
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c
+        stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c
+        stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c
         stm32h753_hal/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c
@@ -40,6 +42,7 @@ if (FPRIME_PLATFORM STREQUAL "stm32h7")
         stm32h753_hal/Core/Src/gpio.c
         stm32h753_hal/Core/Src/dma.c
         stm32h753_hal/Core/Src/i2c.c
+        stm32h753_hal/Core/Src/spi.c
         stm32h753_hal/Core/Src/tim.c
         stm32h753_hal/Core/Src/usart.c
         stm32h753_hal/Core/Src/stm32h7xx_hal_msp.c

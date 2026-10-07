@@ -67,6 +67,7 @@ void configureTopology() {
     cmdSeq.allocateBuffer(0, Stm32::getBootstrapAllocator(), 5 * 1024);
 
     // PrmDb file name must be supplied by the using topology
+    Os::Baremetal::MicroFs::registerAlias("PrmDb.dat", "/bin0/file1");
     FileHandling::prmDb.configure("PrmDb.dat");
 
     const Fw::Success comDriverOpened = comDriver.open(FW_COM_BUFFER_MAX_SIZE, Stm32::UsartInstance::Usart1,

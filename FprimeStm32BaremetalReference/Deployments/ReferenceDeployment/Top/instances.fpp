@@ -76,4 +76,6 @@ module ReferenceDeployment {
 
   instance i2cDriver: Stm32.Stm32I2cDriver base id 0x10016000
 
+  instance spiDriver: Stm32.Stm32SpiDriver base id 0x10017000
+
 }
