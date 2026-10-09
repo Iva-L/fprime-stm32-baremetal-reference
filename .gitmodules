@@ -9,4 +9,4 @@
 	url = https://github.com/fprime-community/fprime-sensors
 [submodule "lib/fprime-stm32"]
 	path = lib/fprime-stm32
-	url = https://github.com/Iva-L/fprime-stm32
+	url = https://github.com/fprime-community/fprime-stm32
