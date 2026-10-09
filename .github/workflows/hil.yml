@@ -1,0 +1,143 @@
+name: HIL Tests (STM32H753XI-EVAL2)
+
+# Maintainer-gated: a PR must already be reviewed, then a maintainer comments
+# "/run-hil" to trigger this. Never triggered directly off `pull_request` -
+# this job runs on self-hosted hardware, and running unreviewed fork PR code
+# there would let anyone execute arbitrary code on the real board.
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
+jobs:
+  hil:
+    name: Run HIL test suite on real hardware
+    if: >
+      github.event.issue.pull_request != null &&
+      contains(github.event.comment.body, '/run-hil') &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    # TODO: update once the Pi runner is registered with these labels.
+    runs-on: [self-hosted, hil, rpi]
+
+    steps:
+      - name: Resolve PR head commit
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            core.setOutput('sha', pr.head.sha);
+
+      - name: Mark HIL run pending
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ steps.pr.outputs.sha }}',
+              state: 'pending',
+              context: 'hil-tests',
+              description: 'Running HIL suite on real hardware',
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            });
+
+      # Explicit SHA, not the comment's default ref - this is what prevents a
+      # late push to the PR branch from swapping in different code after review.
+      - name: Checkout PR head commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr.outputs.sha }}
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install ARM GNU Toolchain + OpenOCD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-dev openocd
+
+      - name: Install F' Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r lib/fprime/requirements.txt
+
+      - name: Cross-compile for stm32h7
+        run: |
+          fprime-util purge -f
+          fprime-util generate -f
+          fprime-util build -j"$(nproc)"
+
+      - name: Flash board via OpenOCD/ST-Link
+        run: |
+          openocd -f interface/stlink.cfg -f target/stm32h7x.cfg \
+            -c "program build-artifacts/stm32h7/ReferenceDeployment/bin/ReferenceDeployment verify reset exit"
+
+      - name: Start fprime-gds against the board
+        run: |
+          nohup fprime-gds \
+            --dictionary build-artifacts/stm32h7/ReferenceDeployment/dict/ReferenceDeploymentTopologyDictionary.json \
+            --communication-selection uart --uart-device /dev/ttyACM0 --uart-baud 115200 \
+            --no-app --gui none --log-to-stdout --log-level-gds INFO \
+            > fprime-gds.log 2>&1 &
+          echo $! > fprime-gds.pid
+          sleep 5
+
+      - name: Run HIL pytest suite
+        run: |
+          pytest -v FprimeStm32BaremetalReference/Deployments/ReferenceDeployment/test/int/ \
+            --dictionary build-artifacts/stm32h7/ReferenceDeployment/dict/ReferenceDeploymentTopologyDictionary.json \
+            --junit-xml-file hil-results.xml --gen-junitxml
+
+      - name: Stop fprime-gds
+        if: always()
+        run: kill "$(cat fprime-gds.pid)" 2>/dev/null || true
+
+      - name: Upload HIL artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hil-results-${{ steps.pr.outputs.sha }}
+          path: |
+            hil-results.xml
+            fprime-gds.log
+            logs/
+
+      - name: Mark HIL run passed
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ steps.pr.outputs.sha }}',
+              state: 'success',
+              context: 'hil-tests',
+              description: 'HIL suite passed on real hardware',
+            });
+
+      - name: Mark HIL run failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ steps.pr.outputs.sha }}',
+              state: 'failure',
+              context: 'hil-tests',
+              description: 'HIL suite failed - see workflow run for details',
+            });
